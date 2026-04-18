@@ -1,0 +1,183 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="container mt-4">
+
+  <!-- Listing Title -->
+  <h3 class="text-center mb-4"><%= listing.title %></h3>
+
+  <!-- Listing Card -->
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card listing-card shadow">
+
+        <img src="<%= listing.image.url %>" 
+        class="card-img-top show-img" 
+        alt="listing_image">
+
+        <div class="card-body text-center">
+
+          <p class="mb-1">
+            <i>Owned by <b><%= listing.owner.username %></b></i>
+          </p>
+
+          <p><%= listing.description %></p>
+
+          <p><b>&#8377; <%= listing.price ? listing.price : "N/A" %></b></p>
+
+          <p class="text-muted">
+            <%= listing.location %>, <%= listing.country %>
+          </p>
+
+        </div>
+      </div>
+
+      <!-- Buttons -->
+       <% if (currentUser && currentUser._id.toString() === listing.owner._id.toString()) { %>
+      <div class="d-flex justify-content-center gap-3 mt-3">
+
+        <a href="/listings/<%= listing._id %>/edit" 
+        class="btn btn-dark">
+          Edit
+        </a>
+
+        <form method="POST" 
+        action="/listings/<%=listing._id%>?_method=DELETE">
+
+          <button class="btn btn-danger">
+            Delete
+          </button>
+
+        </form>
+
+      </div>
+        <% } %>
+
+    </div>
+  </div>
+
+  <!-- Review Section -->
+   <% if (!currentUser) { %>
+    `<p class="text-center mt-3">
+       <i class="fa-solid fa-triangle-exclamation" style= "color: #409771"></i> 
+       Please 
+      <a href="/login" class="btn custom-btn">Login</a> to leave a review.
+    </p>`
+  <% } else { %>
+  <div class="row justify-content-center mt-4">
+
+    <div class="col-md-6">
+
+      <h4 class="mb-3 text-center">Leave a Review</h4>
+
+      <form 
+      action="/listings/<%= listing._id %>/reviews" 
+      method="POST" 
+      novalidate 
+      class="needs-validation">
+
+
+      <fieldset class="starability-slot">
+        <legend>Rating:</legend>
+
+        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+
+        <input type="radio" id="rate1" name="review[rating]" value="1" />
+        <label for="rate1" title="Terrible">1 star</label>
+
+        <input type="radio" id="rate2" name="review[rating]" value="2" />
+        <label for="rate2" title="Not good">2 stars</label>
+
+        <input type="radio" id="rate3" name="review[rating]" value="3" />
+        <label for="rate3" title="Average">3 stars</label>
+
+        <input type="radio" id="rate4" name="review[rating]" value="4" />
+        <label for="rate4" title="Very good">4 stars</label>
+
+        <input type="radio" id="rate5" name="review[rating]" value="5" />
+        <label for="rate5" title="Amazing">5 stars</label>
+
+      </fieldset>
+
+      <br />
+        <div class="mb-3">
+          <label class="form-label">Comments</label>
+
+          <textarea 
+          name="review[comment]"
+          rows="4"
+          class="form-control"
+          required></textarea>
+
+          <div class="invalid-feedback">
+            Please add some comments for review
+          </div>
+
+        </div>
+
+        <button class="btn btn-outline-dark w-100">
+          Submit
+        </button>
+
+      </form>
+      <% } %>
+
+      <hr class="mt-5"/>
+
+      <!-- All Reviews -->
+      <h4 class="text-center mb-4">All Reviews</h4>
+
+      <div class="row justify-content-center">
+
+      <% if (listing && listing.reviews && listing.reviews.length > 0) { %>
+
+        <% for(let review of listing.reviews) { %>
+
+          <div class="card col-md-5 m-2 shadow-sm">
+
+            <div class="card-body">
+
+              <p class="card-subtitle mb-2 text-muted">
+                <i>By <b><%= review.author.username %></b></i>
+
+              <p class="starability-result card-title" data-rating="<%= review.rating%>"></p>
+
+              <p class="card-text">
+                <%= review.comment %>
+              </p>
+
+            </div>
+
+              <% if (currentUser && currentUser._id.toString() === review.author._id.toString()) { %>
+            <form 
+            class="mb-3 text-center"
+            method="POST"
+            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+
+              <button class="btn btn-sm btn-dark">
+                Delete
+              </button>
+
+            </form>
+            <% } %>
+
+          </div>
+
+        <% } %>
+
+      <% } else { %>
+
+        <p class="text-center">
+          No reviews yet. Be the first one to review!
+        </p>
+
+      <% } %>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<br><br>

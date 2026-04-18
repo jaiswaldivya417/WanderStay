@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WanderStay</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#409771,#9ad3bb);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* Floating card */
+.container{
+    text-align:center;
+    background:white;
+    padding:50px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float{
+    0%{ transform: translateY(0px); }
+    50%{ transform: translateY(-15px); }
+    100%{ transform: translateY(0px); }
+}
+
+h1{
+    font-size:40px;
+    font-weight:bold;
+    color:#333;
+}
+
+/* Button styling */
+.btn{
+    margin-top:25px;
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    background:#409771;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#2b5c47;
+    transform:scale(1.05);
+}
+
+.color{
+    color:#409771;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Hello World <br> Welcome to <b class="color">WanderStay</b> ✈️</h1>
+
+<a href="/listings">
+<button class="btn">Explore Listings</button>
+</a>
+
+</div>
+
+</body>
+</html>
